@@ -1,12 +1,22 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import isTokenExpired from "../utils/authUtils";
 
 const Login = () => {
   const [username, setUsername] = useState("username");
   const [password, setPassword] = useState("admin");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("JWT_TOKEN");
+    const res = isTokenExpired(token);
+
+    if (!res) {
+      navigate("/home");
+    }
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,6 +30,9 @@ const Login = () => {
         const token = res.data.token;
         localStorage.setItem("JWT_TOKEN", token);
         navigate("/home");
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 

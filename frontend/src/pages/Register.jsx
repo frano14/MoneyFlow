@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import isTokenExpired from "../utils/authUtils";
 
 const Register = () => {
   const [username, setUsername] = useState("username");
@@ -11,6 +12,15 @@ const Register = () => {
   const [password, setPassword] = useState("admin");
   const [cashamount, setCashamount] = useState(950);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("JWT_TOKEN");
+    const res = isTokenExpired(token);
+
+    if (!res) {
+      navigate("/home");
+    }
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
