@@ -5,7 +5,7 @@ import axios from "axios";
 import isTokenExpired from "../utils/authUtils";
 
 const Login = () => {
-  const [username, setUsername] = useState("username");
+  const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("admin");
   const navigate = useNavigate();
 

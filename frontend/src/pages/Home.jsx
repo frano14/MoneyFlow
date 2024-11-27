@@ -1,18 +1,22 @@
 /* eslint-disable no-unused-vars */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/slices/userSlice";
+import { addCard } from "../redux/slices/cardSlice";
 import LogoutButton from "../components/LogoutButton";
+import CreateCard from "../components/CreateCard";
+import Cards from "../components/Cards";
 
 const Home = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("JWT_TOKEN");
-
+    setLoading(true);
     axios
       .get("http://localhost:5555/api/user", {
         headers: {
@@ -20,20 +24,42 @@ const Home = () => {
         },
       })
       .then((res) => {
-        dispatch(setUser(res.data));
+        const { cards, ...user } = res.data;
+        dispatch(setUser(user));
+        dispatch(addCard(cards));
+        setLoading(false);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
   }, []);
 
   return (
     <div>
-      <p>Home</p>
-      <Link to={"/"} className="bg-red-200">
-        Back
-      </Link>
-      <p>{user?.firstname}</p>
-
-      <LogoutButton />
+      <p className="mb-12">Home</p>
+      <div className=" flex justify-between items-start">
+        <Link to={"/"} className="bg-red-200">
+          Back
+        </Link>
+        {loading ? (
+          <p>loading...</p>
+        ) : (
+          <div className="flex flex-col">
+            <p>{user?.username}</p>
+            <p>{user?.firstname}</p>
+            <p>{user?.lastname}</p>
+            <p>{user?.mail}</p>
+            <p>{user?.cardsamount}</p>
+            <p>{user?.cashamount}</p>
+            <p>{user?.total}</p>
+            <p>{user?.role}</p>
+            <Cards />
+          </div>
+        )}
+        <CreateCard />
+        <LogoutButton />
+      </div>
     </div>
   );
 };
