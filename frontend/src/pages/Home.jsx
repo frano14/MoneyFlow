@@ -8,6 +8,9 @@ import { addCard } from "../redux/slices/cardSlice";
 import LogoutButton from "../components/LogoutButton";
 import CreateCard from "../components/CreateCard";
 import Cards from "../components/Cards";
+import CreateTransaction from "../components/createTransaction";
+import { addTransaction } from "../redux/slices/transactionSlice";
+import Transactions from "../components/Transactions";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -17,6 +20,7 @@ const Home = () => {
   useEffect(() => {
     const token = localStorage.getItem("JWT_TOKEN");
     setLoading(true);
+
     axios
       .get("http://localhost:5555/api/user", {
         headers: {
@@ -24,9 +28,19 @@ const Home = () => {
         },
       })
       .then((res) => {
-        const { cards, ...user } = res.data;
+        const { cards, transactions, ...user } = res.data;
         dispatch(setUser(user));
-        dispatch(addCard(cards));
+        dispatch(
+          addCard(
+            cards.map((card) => ({
+              _id: card._id,
+              cardnumber: card.cardnumber,
+              type: card.type,
+              expiredate: card.expiredate,
+            }))
+          )
+        );
+        dispatch(addTransaction(transactions));
         setLoading(false);
       })
       .catch((error) => {
@@ -55,11 +69,13 @@ const Home = () => {
             <p>{user?.total}</p>
             <p>{user?.role}</p>
             <Cards />
+            <Transactions />
           </div>
         )}
         <CreateCard />
         <LogoutButton />
       </div>
+      <CreateTransaction />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 
 const Cards = () => {
   const cards = useSelector((state) => state.card.cards[0]);
+
   return (
     <div>
       <h1 className="mb-4">cards list</h1>

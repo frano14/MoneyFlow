@@ -3,7 +3,6 @@ import User from "../models/userModel.js";
 
 const createcard = async (req, res) => {
   try {
-    const fulluser = req.user;
     const user = req.user.id;
     const { cardnumber, type, expiredate } = req.body;
 

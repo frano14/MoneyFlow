@@ -11,6 +11,7 @@ const userSchema = mongoose.Schema({
   total: { type: Number, require: true },
   role: { type: String, require: true, enum: ["user", "admin"] },
   cards: [{ type: mongoose.Schema.Types.ObjectId, ref: "Card" }],
+  transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Transaction" }],
 });
 
 const User = mongoose.model("User", userSchema);
