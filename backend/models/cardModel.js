@@ -23,6 +23,7 @@ const cardSchema = mongoose.Schema({
     ],
   },
   expiredate: { type: Date, require: true },
+  balance: { type: Number, require: true },
 });
 
 const Card = mongoose.model("Card", cardSchema);

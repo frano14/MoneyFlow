@@ -10,6 +10,7 @@ const Cards = () => {
         <div key={index} className="flex gap-2">
           <p>{card.type}</p>
           <p>{card.cardnumber}</p>
+          <p>{card.balance}</p>
         </div>
       ))}
     </div>

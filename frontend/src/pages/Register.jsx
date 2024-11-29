@@ -5,7 +5,7 @@ import axios from "axios";
 import isTokenExpired from "../utils/authUtils";
 
 const Register = () => {
-  const [username, setUsername] = useState("username");
+  const [username, setUsername] = useState("admin");
   const [firstname, setFirstname] = useState("firstname");
   const [lastname, setLastname] = useState("lastname");
   const [mail, setMail] = useState("mail@gmail.com");
@@ -34,7 +34,7 @@ const Register = () => {
         password,
         cardsamount: 0,
         cashamount,
-        total: 0,
+        total: cashamount,
         role: "user",
       })
       .then((res) => {

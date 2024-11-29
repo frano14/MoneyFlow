@@ -1,3 +1,4 @@
+import Card from "../models/cardModel.js";
 import { Transaction } from "../models/transactionModel.js";
 import User from "../models/userModel.js";
 
@@ -18,12 +19,19 @@ const createtransaction = async (req, res) => {
       ...(card && { card }),
     });
 
-    const user = req.user.id;
-    await User.findByIdAndUpdate(
-      user,
-      { $push: { transactions: newTransaction._id } },
-      { new: true }
-    );
+    const currentUser = await User.findById(owner);
+    console.log(currentUser);
+
+    currentUser.transactions.push(newTransaction);
+    currentUser.total -= newTransaction.amount;
+    if (card) {
+      currentUser.cardsamount -= newTransaction.amount;
+      const currentCard = await Card.findById(card);
+      currentCard.balance -= newTransaction.amount;
+      currentCard.save();
+    } else currentUser.cashamount -= newTransaction.amount;
+
+    await currentUser.save();
 
     res.status(200).json(newTransaction);
   } catch (error) {

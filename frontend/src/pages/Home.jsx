@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../redux/slices/userSlice";
+import { amountChanged, setUser } from "../redux/slices/userSlice";
 import { addCard } from "../redux/slices/cardSlice";
 import LogoutButton from "../components/LogoutButton";
 import CreateCard from "../components/CreateCard";
@@ -29,18 +29,11 @@ const Home = () => {
       })
       .then((res) => {
         const { cards, transactions, ...user } = res.data;
+
         dispatch(setUser(user));
-        dispatch(
-          addCard(
-            cards.map((card) => ({
-              _id: card._id,
-              cardnumber: card.cardnumber,
-              type: card.type,
-              expiredate: card.expiredate,
-            }))
-          )
-        );
+        dispatch(addCard(cards));
         dispatch(addTransaction(transactions));
+
         setLoading(false);
       })
       .catch((error) => {
@@ -64,9 +57,9 @@ const Home = () => {
             <p>{user?.firstname}</p>
             <p>{user?.lastname}</p>
             <p>{user?.mail}</p>
-            <p>{user?.cardsamount}</p>
-            <p>{user?.cashamount}</p>
-            <p>{user?.total}</p>
+            <p>cards total + {user?.cardsamount}</p>
+            <p>cash {user?.cashamount}</p>
+            <p>total {user?.total}</p>
             <p>{user?.role}</p>
             <Cards />
             <Transactions />

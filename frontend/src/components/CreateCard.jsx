@@ -5,6 +5,7 @@ import axios from "axios";
 
 const CreateCard = () => {
   const [cardnumber, setCardnumber] = useState(0);
+  const [balance, setBalance] = useState(0);
   const [type, setType] = useState("");
   const [expiredate, setExpiredate] = useState(Date);
 
@@ -20,6 +21,7 @@ const CreateCard = () => {
           cardnumber,
           type,
           expiredate,
+          balance,
         },
         {
           headers: {
@@ -43,6 +45,14 @@ const CreateCard = () => {
           type="Number"
           value={cardnumber}
           onChange={(e) => setCardnumber(e.target.value)}
+          className="bg-lime-300 mb-2"
+        />
+
+        <label htmlFor="balance">balance</label>
+        <input
+          type="Number"
+          value={balance}
+          onChange={(e) => setBalance(e.target.value)}
           className="bg-lime-300 mb-2"
         />
 
