@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import isTokenExpired from "../utils/authUtils";
+import Button from "../components/Button";
 
 const Login = () => {
-  const [username, setUsername] = useState("admin");
-  const [password, setPassword] = useState("admin");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,32 +39,62 @@ const Login = () => {
 
   return (
     <div>
-      <p className="mb-12">Login</p>
+      <div className="flex w-screen h-screen backgroundImage justify-center items-center">
+        <div className="bg-gray w-[60%] p-2 flex rounded-md">
+          <div className="w-[50%] bg-green rounded-md flex flex-col justify-between items-center text-white px-6 py-4">
+            <div className="flex justify-between items-center w-full">
+              <p className="titlesFont text-[24px]">MoneyFlow</p>
+              <Link
+                to={"/"}
+                className="bg-white bg-opacity-40 px-2 rounded-full"
+              >
+                <p>Back to website &rarr;</p>
+              </Link>
+            </div>
+            <div className="flex items-center flex-col">
+              <p className="text-center mb-8 text-[20px]">
+                Manage Every Transaction,
+                <br />
+                Master Your Financial Journey
+              </p>
+              <div className="flex items-center gap-2">
+                <Link
+                  className="bg-white bg-opacity-60 w-8 h-[2px] rounded-full"
+                  to="/register"
+                ></Link>
+                <div className="bg-white w-8 h-[6px] rounded-full"></div>
+              </div>
+            </div>
+          </div>
+          <div className="w-[50%] p-10">
+            <h1 className="titlesFont text-white text-[32px]">Log in</h1>
+            <p className="text-textgray text-[14px] mt-4 mb-8">
+              Don't have an account?{" "}
+              <Link to="/register" className="text-green underline">
+                Sign up
+              </Link>
+            </p>
 
-      <form className="flex flex-col">
-        <label htmlFor="Username">username</label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="bg-green-300 mb-4"
-        />
+            <input
+              type="text"
+              className="focus:outline-none focus:outline-green bg-lightgray placeholder:text-textgray rounded-md py-2 px-4 text-white mt-4 w-full"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username"
+            />
 
-        <label htmlFor="passwprd">password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="bg-green-300 mb-4"
-        />
-        <button className="bg-green-600" onClick={handleSubmit}>
-          login
-        </button>
-      </form>
+            <input
+              type="password"
+              className="focus:outline-none focus:outline-green bg-lightgray placeholder:text-textgray rounded-md py-2 px-4 text-white mt-4 mb-8 w-full"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+            />
 
-      <Link to={"/"} className="bg-red-200">
-        Back
-      </Link>
+            <Button text="Log in" handleSubmit={handleSubmit} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
